@@ -5,6 +5,13 @@ output:
   html_notebook: default
 ---
 
+## Pre-requisites
+Install these packages:
+
+    install.packages("RSQLite")
+    install.packages("ncdf4")
+    
+
 ## 2 Part I: Implementing the GWASdata class
 The process of designing and implementing a new class requires that the devel-
 opper spends some time thinking about:
@@ -22,3 +29,44 @@ formats commonly used inside or outside Bioconductor,
 It’s generally considered good design to avoid storing redundant information
 (although some exceptions can be made for performance considerations) and to
 keep things as simple as possible.
+
+## 2.1 Class deﬁnition
+For our GWASdata class, we want the following slots:
+
+* datapath: the path to a NetCDF ﬁle containing the GWAS experimental
+data (a matrix). This will be of type character.
+
+* dataconn: the connection to the NetCDF ﬁle pointed by datapath. A
+connection to a NetCDF ﬁle is an object of class ncdf . Note that there is
+a complication here due to the fact that the ncdf class is deﬁned in the
+ncdf package and that this package has no NAMESPACE. This makes
+it impossible to import the ncdf package in our StudentGWAS package,
+and, in particular, we can’t use "ncdf" to specify the type of our slot. So
+we will use the type "list" for this slot. This works because ncdf is an
+S3 class (aka old style class) and in the S3 class system, every object is a
+list with a class attribute attached to it.
+
+* metadatapath: the path to an SQLite db ﬁle containing the GWAS meta-
+data. This will be of type character.
+
+* metadataconn: the connection to the SQLite db pointed by metadatap-
+ath. This will be of type SQLiteConnection.
+
+* nrow: the nb of rows in the GWAS matrix (this is also the nb or rows
+in the subjects table contained in the SQLite db). This will be of type
+integer.
+
+* ncol: the nb of cols in the GWAS matrix (this is also the nb or rows in
+the snps table contained in the SQLite db). Also of class integer.
+
+### Exercise 1
+Start a new ﬁle (let’s name it GWASdata-class.R) and write the setClass state
+ment for the GWASdata class.
+
+      setClass("GWASdata",
+      representation(
+      datapath="character",
+      ...
+      ...
+      )
+      )
