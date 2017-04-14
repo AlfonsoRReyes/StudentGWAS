@@ -1,0 +1,24 @@
+---
+title: "R Notebook"
+output:
+  html_document: default
+  html_notebook: default
+---
+
+## 2 Part I: Implementing the GWASdata class
+The process of designing and implementing a new class requires that the devel-
+opper spends some time thinking about:
+
+* what s/he wants to achieve exactly with the class,
+* how is the class going to be used, by who, for doing what,
+* what are the typical use cases,
+* what is the typical size of the data that will be manipulated, small (< 1
+Mb), big (> 100 Mb), very big (> 10 Gb),
+* how the class will interact with other packages and classes in CRAN/Bioconductor,
+* how the facilities provided by the class will ﬁt within the tools and ﬁle
+formats commonly used inside or outside Bioconductor,
+* etc...
+
+It’s generally considered good design to avoid storing redundant information
+(although some exceptions can be made for performance considerations) and to
+keep things as simple as possible.
