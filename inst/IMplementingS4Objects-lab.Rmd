@@ -70,3 +70,23 @@ ment for the GWASdata class.
       ...
       )
       )
+
+
+```{r}
+datapath <- file.path("./inst/extdata", "small_snpData.nc")
+datapath
+
+metadatapath <- file.path("./inst/extdata", "small_metadata.sqlite")
+metadatapath
+```
+
+```{r}
+library(RSQLite)
+
+datapath <- file.path("../inst/extdata", "small_snpData.nc")
+metadatapath <- file.path("../inst/extdata", "small_metadata.sqlite")
+
+source("../R/GWASdata-class.R")
+GWASdata(datapath, metadatapath)
+```
+
