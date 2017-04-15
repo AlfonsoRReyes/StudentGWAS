@@ -82,11 +82,21 @@ metadatapath
 
 ```{r}
 library(RSQLite)
+library(RNetCDF)
+
 
 datapath <- file.path("../inst/extdata", "small_snpData.nc")
 metadatapath <- file.path("../inst/extdata", "small_metadata.sqlite")
 
 source("../R/GWASdata-class.R")
-GWASdata(datapath, metadatapath)
+GWASdataRead(datapath, metadatapath)
+```
+
+```{r}
+source("../R/GWASdata-class.R")
+datapath <- file.path("../inst/extdata", "small_snpData.nc")
+metadatapath <- file.path("../inst/extdata", "small_metadata.sqlite")
+
+GWASdata(datapath = datapath, metadatapath = metadatapath)
 ```
 
