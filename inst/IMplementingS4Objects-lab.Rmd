@@ -80,6 +80,15 @@ metadatapath <- file.path("./inst/extdata", "small_metadata.sqlite")
 metadatapath
 ```
 
+
+```{r}
+pth <- file.path("../inst/extdata", "snpdata.csv")
+dat <- scan(pth, what = character(0), sep =",",
+                               skip = 600, nlines = 1, quiet = TRUE)
+```
+
+
+
 ```{r}
 library(RSQLite)
 library(RNetCDF)
@@ -97,6 +106,19 @@ source("../R/GWASdata-class.R")
 datapath <- file.path("../inst/extdata", "small_snpData.nc")
 metadatapath <- file.path("../inst/extdata", "small_metadata.sqlite")
 
-GWASdata(datapath = datapath, metadatapath = metadatapath)
+gwas <- GWASdata(datapath = datapath, metadatapath = metadatapath)
+```
+
+
+```{r}
+dataconn(gwas)
+```
+
+```{r}
+nrow(gwas)
+```
+
+```{r}
+ncol(gwas)
 ```
 
