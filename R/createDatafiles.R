@@ -5,7 +5,6 @@
 #'
 openMySQLiteFile <- function() {
   # connect to sqlite
-  #library(DBI)
   mydb <- dbConnect(RSQLite::SQLite(), "./inst/extdata/small_metadata.sqlite")
   dbListTables(mydb)
   dbGetQuery(mydb, "SELECT * FROM subjects")
