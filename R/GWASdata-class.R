@@ -2,6 +2,7 @@
 #'
 #' @importFrom RSQLite dbConnect dbListTables dbGetQuery dbDisconnect
 #' @importFrom RNetCDF open.nc read.nc
+#' @importFrom methods new
 #'
 setClass("GWASdata", slots = c(datapath = "character",
                                dataconn = "list",
@@ -14,7 +15,6 @@ setClass("GWASdata", slots = c(datapath = "character",
 
 GWASdataRead <- function(datapath, metadatapath) {
     # open the SQLite connection
-    #mydb <- dbConnect(RSQLite::SQLite(), "./inst/extdata/small_metadata.sqlite")
     mydb <- dbConnect(RSQLite::SQLite(), metadatapath)
     dbListTables(mydb)
     subjects <- dbGetQuery(mydb, "SELECT * FROM subjects")
@@ -46,3 +46,29 @@ GWASdata <- function(datapath, metadatapath) {
         nrow = nrow, ncol = ncol)
     # dataconn
 }
+
+
+setGeneric("dataconn", function(x) standardGeneric("dataconn"))
+setMethod("dataconn", "GWASdata",
+          function(x) {
+              dataconn <- x@dataconn
+              class(dataconn) <- "ncdf"
+              x@dataconn
+          })
+
+
+setMethod("nrow", "GWASdata",
+          function(x) {
+              mydb <- dbConnect(RSQLite::SQLite(), x@metadatapath)
+              subjects <- dbGetQuery(mydb, "SELECT * FROM subjects")
+              return(nrow(subjects))
+})
+
+
+setMethod("ncol", "GWASdata",
+          function(x) {
+              mydb <- dbConnect(RSQLite::SQLite(), x@metadatapath)
+              ncol_subjects <- ncol(dbGetQuery(mydb, "SELECT * FROM subjects"))
+              ncol_snps <- ncol(dbGetQuery(mydb, "SELECT * FROM snps"))
+              return(list(ncol_subjects = ncol_subjects, ncol_snps = ncol_snps))
+          })
